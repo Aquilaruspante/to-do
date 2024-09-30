@@ -1,0 +1,36 @@
+.no-todo-feed {
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    color: rgb(2, 146, 26);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    height: 20%;
+}
+
+#no-todo-button {
+    transition: 0.4s;
+    margin-top: 24px;
+    width: 50px;
+    height: 50px;
+    border-radius: 15px;
+    font-size: 1.5rem;
+    background-color: rgb(207, 219, 207);
+    border: 1px solid rgb(5, 99, 22);
+    color: rgb(2, 48, 10);
+}
+
+#no-todo-button:hover {
+    transition: 0.4s;
+    background-color: rgb(246, 248, 246);
+    box-shadow: 5px 5px rgb(150, 151, 150);
+    cursor: pointer;
+}
+
+#no-todo-button:active {
+    transition: 0.2s;
+    box-shadow: 1px 1px rgb(150, 151, 150);
+}
+
