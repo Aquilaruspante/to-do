@@ -8,17 +8,43 @@ import renderProjectsCards from "./manage-projects/renderProjectCards";
 
 const content = document.querySelector("#content");
 
-renderProjects();
+function handleNavigation(view) {
+  content.innerHTML = "";
+  switch (view) {
+    case "feed":
+      renderProjects();
+      break;
+    case "new-project":
+      renderAddProject();
+      break;
+    case "manage-projects":
+      renderProjectsCards();
+      break;
+    default:
+      console.error("Unknown view:", view);
+      renderProjects();
+  }
+}
 
-const feedButton = document.querySelector("#feed-btn");
+function setupEventListeners() {
+  const feedButton = document.querySelector("#feed-btn");
+  const newProjectButton = document.querySelector("#new-project-btn");
+  const projectsButton = document.querySelector("#projects-btn");
 
-feedButton.addEventListener("click", renderProjects);
+  feedButton.addEventListener("click", () => handleNavigation("feed"));
+  newProjectButton.addEventListener("click", () =>
+    handleNavigation("new-project")
+  );
+  projectsButton.addEventListener("click", () =>
+    handleNavigation("manage-projects")
+  );
+}
 
-const newProjectButton = document.querySelector("#new-project-btn");
+function init() {
+  setupEventListeners();
+  handleNavigation("feed");
+}
 
-newProjectButton.addEventListener("click", renderAddProject);
-
-const projectsButton = document.querySelector("#projects-btn");
-projectsButton.addEventListener("click", renderProjectsCards);
+init();
 
 export { content };

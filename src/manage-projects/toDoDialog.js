@@ -34,6 +34,7 @@ function createAndAddToDo(
 }
 
 function openToDoDialog(toDoArea, projectIndex) {
+  console.log("too area: ", toDoArea, " index: ", projectIndex);
   // container element.
 
   const dialogContainer = document.createElement("div");

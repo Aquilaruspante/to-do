@@ -1,7 +1,7 @@
 #new-project-form {
     border: 3px double rgb(2, 146, 26);
     height: 40%;
-    width: 50%;
+    width: 40%;
     margin: auto;
     margin-top: 5%;
     box-sizing: border-box;
@@ -14,18 +14,21 @@ legend {
     margin-bottom: 32px;
 }
 
-#form-title {
-    position: relative;
-    left: 80px;
-    width: 250px;
+.form-element {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
 }
 
 #form-description {
-    position: relative;
-    left: 39px;
-    width: 250px;
+    flex-basis: 10%;
+    flex-grow: 2;
+    max-width: 80%;
 }
 
-.form-element {
-    margin-bottom: 24px;
+#form-title {
+    flex-basis: 10%;
+    flex-grow: 2;
+    max-width: 80%;
 }
+

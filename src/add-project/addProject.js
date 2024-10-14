@@ -6,6 +6,7 @@ import FormElement from "./FormElement";
 import { createProject } from "../API/projectCRUD";
 import { renderProjects } from "../feed/feedRenderer";
 import { content } from "../index";
+import renderProjectsButtons from "../manage-projects/renderProjects";
 
 const form = document.createElement("form");
 form.setAttribute("id", "new-project-form");
@@ -33,6 +34,7 @@ addButton.addEventListener("click", () => {
   titleElement.input.value = null;
   descriptionElement.input.value = null;
   renderProjects();
+  renderProjectsButtons();
 });
 
 fieldSet.appendChild(addButton);

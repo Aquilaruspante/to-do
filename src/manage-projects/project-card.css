@@ -1,5 +1,6 @@
 #your-projects {
-    font-size: 700;
+    font-size: 1.5rem;
+    font-weight: 700;
     text-align: center;
     margin-top: 80px;
     margin-bottom: 20px;
@@ -29,12 +30,16 @@
 }
 
 .project-card-header {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 8px;
     border-bottom: 1px solid rgb(202, 218, 202);
     text-align: center;
     padding-bottom: 10px;
 }
 
 .project-card-body {
+    font-size: 1.2rem;
     box-sizing: border-box;
     padding-top: 20px;
 }
@@ -66,4 +71,8 @@
     margin-top: 16px;
     width: 32px;
     height: 32px;
+}
+
+#project-legend {
+    text-align: center;
 }

@@ -5,10 +5,17 @@ import { renderAddProject } from "../add-project/addProject";
 import renderProjectsButtons from "../manage-projects/renderProjects";
 import { updateToDo } from "../API/todDoCRUD";
 import { content } from "../index";
+import selectProject from "../manage-projects/selectProject";
 
 import { format } from "date-fns";
 
-const projects = listProjects();
+const noProjectTitle = document.createElement("h2");
+noProjectTitle.innerText = "No projects yet. Log your first one...";
+
+const noProjectButton = document.createElement("button");
+noProjectButton.setAttribute("id", "no-todo-button");
+noProjectButton.innerText = "+";
+noProjectButton.addEventListener("click", renderAddProject);
 
 const noToDoTitle = document.createElement("h2");
 noToDoTitle.innerText = "No ToDos yet. Log your first one...";
@@ -16,22 +23,27 @@ noToDoTitle.innerText = "No ToDos yet. Log your first one...";
 const noToDoButton = document.createElement("button");
 noToDoButton.setAttribute("id", "no-todo-button");
 noToDoButton.innerText = "+";
-noToDoButton.addEventListener("click", renderAddProject);
+noToDoButton.addEventListener("click", selectProject);
 
 const noToDosElement = document.createElement("div");
 noToDosElement.setAttribute("class", "no-todo-feed");
-noToDosElement.appendChild(noToDoTitle);
-noToDosElement.appendChild(noToDoButton);
 
 function renderProjects() {
+  const projects = listProjects() || [];
   let toDos = [];
   content.innerHTML = "";
-  if (projects) {
+  noToDosElement.innerHTML = "";
+  if (projects.length) {
     projects.forEach((project) => {
       project.toDos.forEach((toDo, index) => {
         toDos.push([toDo, index]);
       });
     });
+  } else {
+    noToDosElement.appendChild(noProjectTitle);
+    noToDosElement.appendChild(noProjectButton);
+    content.appendChild(noToDosElement);
+    return;
   }
 
   if (toDos.length) {
@@ -79,6 +91,8 @@ function renderProjects() {
       content.appendChild(div);
     });
   } else {
+    noToDosElement.appendChild(noToDoTitle);
+    noToDosElement.appendChild(noToDoButton);
     content.appendChild(noToDosElement);
   }
   renderProjectsButtons();
