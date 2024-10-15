@@ -14,14 +14,23 @@ description.innerText = "Click on a project card to expand it!";
 function renderProjectsCards() {
   content.innerHTML = "";
   content.appendChild(projectListHeader);
-  content.appendChild(description);
   const projects = JSON.parse(localStorage.getItem("projects"));
-  projects.forEach((project, index) => {
-    const cardElement = new ProjectCard(project.title, project.description);
-    cardElement.create();
-    content.appendChild(cardElement.card);
-    cardElement.card.addEventListener("click", () => renderEditProject(index));
-  });
+  if (projects.length) {
+    content.appendChild(description);
+    projects.forEach((project, index) => {
+      const cardElement = new ProjectCard(project.title, project.description);
+      cardElement.create();
+      content.appendChild(cardElement.card);
+      cardElement.card.addEventListener("click", () =>
+        renderEditProject(index)
+      );
+    });
+  } else {
+    const noProjects = document.createElement("p");
+    noProjects.innerText = "No projects yet...";
+    noProjects.setAttribute("id", "no-projects-legend");
+    content.appendChild(noProjects);
+  }
 }
 
 export default renderProjectsCards;

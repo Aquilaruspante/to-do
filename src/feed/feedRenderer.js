@@ -33,14 +33,22 @@ noToDosElement.setAttribute("class", "no-todo-feed");
 function renderProjects() {
   const projects = listProjects() || [];
   let toDos = [];
+  let toDoAndIndex = [];
   content.innerHTML = "";
   noToDosElement.innerHTML = "";
   if (projects.length) {
     projects.forEach((project) => {
-      project.toDos.forEach((toDo, index) => {
-        toDos.push([toDo, index]);
+      project.toDos.forEach((toDo) => {
+        toDos.push(toDo);
       });
     });
+    sortTodosByDate(toDos);
+    console.log(toDos);
+    toDos.forEach((toDo, index) => {
+      console.log(toDo, index);
+      toDoAndIndex.push([toDo, index]);
+    });
+    console.log("toDoAndIndex", toDoAndIndex);
   } else {
     noToDosElement.appendChild(noProjectTitle);
     noToDosElement.appendChild(noProjectButton);
@@ -49,7 +57,7 @@ function renderProjects() {
   }
 
   if (toDos.length) {
-    toDos.forEach((toDoIndexCouple) => {
+    toDoAndIndex.forEach((toDoIndexCouple) => {
       const div = document.createElement("div");
       div.setAttribute("class", "todo-card");
 
@@ -119,6 +127,11 @@ function renderProjects() {
 
 function reRenderProjects() {
   renderProjects();
+}
+
+function sortTodosByDate(toDos) {
+  toDos.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
+  console.log("toDos inside sort function", toDos);
 }
 
 export { renderProjects };
