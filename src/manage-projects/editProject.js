@@ -21,6 +21,7 @@ function renderEditProject(projectIndex) {
   );
   projectCard.create();
   projectCard.createTodos();
+  projectCard.addCloseButton();
 
   content.innerHTML = "";
   content.appendChild(projectCard.card);

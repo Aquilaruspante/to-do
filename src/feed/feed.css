@@ -38,10 +38,15 @@
 .todo-card {
     border: 1px solid rgb(202, 218, 202);
     margin-top: 32px;
+}
+
+.flex-container {
+    width: 80%;;
+    margin: auto;
     box-sizing: border-box;
     padding: 8px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     font-weight: 500;
 }
 

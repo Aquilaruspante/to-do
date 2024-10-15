@@ -98,10 +98,15 @@ function renderProjects() {
       const imageContainer = document.createElement("div");
       imageContainer.appendChild(closeButton);
 
-      div.appendChild(h3);
-      div.appendChild(date);
-      div.appendChild(projectLink);
-      div.appendChild(imageContainer);
+      const flexContainer = document.createElement("div");
+      flexContainer.setAttribute("class", "flex-container");
+
+      div.appendChild(flexContainer);
+
+      flexContainer.appendChild(h3);
+      flexContainer.appendChild(date);
+      flexContainer.appendChild(projectLink);
+      flexContainer.appendChild(imageContainer);
       content.appendChild(div);
     });
   } else {

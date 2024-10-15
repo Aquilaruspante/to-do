@@ -1,12 +1,18 @@
 import { openToDoDialog } from "./toDoDialog";
 import { format } from "date-fns";
 
+import { deleteProject } from "../API/projectCRUD";
+import { renderProjects } from "../feed/feedRenderer";
+
+import closeButtonImage from "../../images/icons8-close-window-24.png";
+
 class ProjectCard {
   constructor(name, description) {
     this.name = name;
     this.description = description;
     this.card = null;
     this.toDoArea = null;
+    this.header = null;
   }
 
   create() {
@@ -15,6 +21,7 @@ class ProjectCard {
     const header = document.createElement("h3");
     header.setAttribute("class", "project-card-header");
     header.innerText = this.name;
+    this.header = header;
     const body = document.createElement("div");
     body.setAttribute("class", "project-card-body");
     body.innerText = this.description;
@@ -24,6 +31,19 @@ class ProjectCard {
 
     this.card = card;
   }
+
+  createCloseButton(index) {
+    const closeButton = document.createElement("img");
+    closeButton.setAttribute("class", "close-button in-project");
+    closeButton.setAttribute("src", closeButtonImage);
+    closeButton.setAttribute("alt", "close-x");
+    closeButton.addEventListener("click", () => {
+      deleteProject(index);
+      renderProjects();
+    });
+
+    return closeButton;
+  }
 }
 
 class ProjectCardWithTodos extends ProjectCard {
@@ -31,6 +51,11 @@ class ProjectCardWithTodos extends ProjectCard {
     super(name, description);
     this.toDos = toDos;
     this.projectIndex = projectIndex;
+  }
+
+  addCloseButton() {
+    const closeButton = this.createCloseButton();
+    this.header.appendChild(closeButton);
   }
 
   createTodos() {
