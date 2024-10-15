@@ -1,9 +1,11 @@
 import "./feed.css";
 
+import closeButtonImage from "../../images/icons8-close-window-24.png";
+
 import { listProjects } from "../API/projectCRUD";
 import { renderAddProject } from "../add-project/addProject";
 import renderProjectsButtons from "../manage-projects/renderProjects";
-import { updateToDo } from "../API/todDoCRUD";
+import { updateToDo, deleteToDo } from "../API/todDoCRUD";
 import { content } from "../index";
 import selectProject from "../manage-projects/selectProject";
 
@@ -80,14 +82,26 @@ function renderProjects() {
       const projectLink = document.createElement("p");
       projectLink.setAttribute("class", "project-link");
       const projects = JSON.parse(localStorage.getItem("projects"));
-      console.log(projects);
-      console.log(toDoIndexCouple[0].projectIndex);
+
       const project = projects[toDoIndexCouple[0].projectIndex];
       projectLink.innerText = `Project: ${project.title}`;
+
+      const closeButton = document.createElement("img");
+      closeButton.setAttribute("class", "close-button");
+      closeButton.setAttribute("src", closeButtonImage);
+      closeButton.setAttribute("alt", "close-x");
+      closeButton.addEventListener("click", () => {
+        deleteToDo(toDoIndexCouple[1], projects.indexOf(toDoIndexCouple[0]));
+        reRenderProjects();
+      });
+
+      const imageContainer = document.createElement("div");
+      imageContainer.appendChild(closeButton);
 
       div.appendChild(h3);
       div.appendChild(date);
       div.appendChild(projectLink);
+      div.appendChild(imageContainer);
       content.appendChild(div);
     });
   } else {
@@ -96,6 +110,10 @@ function renderProjects() {
     content.appendChild(noToDosElement);
   }
   renderProjectsButtons();
+}
+
+function reRenderProjects() {
+  renderProjects();
 }
 
 export { renderProjects };
