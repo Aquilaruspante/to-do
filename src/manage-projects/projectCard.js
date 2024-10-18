@@ -2,9 +2,15 @@ import { openToDoDialog } from "./toDoDialog";
 import { format } from "date-fns";
 
 import { deleteProject } from "../API/projectCRUD";
-import { renderProjects } from "../feed/feedRenderer";
+import {
+  renderProjects,
+  sortTodosByDate,
+  createCloseTodoButton,
+} from "../feed/feedRenderer";
 
 import closeButtonImage from "../../images/icons8-close-window-24.png";
+import renderEditProject from "./editProject";
+import renderProjectsButtons from "./renderProjects";
 
 class ProjectCard {
   constructor(name, description) {
@@ -40,6 +46,7 @@ class ProjectCard {
     closeButton.addEventListener("click", () => {
       deleteProject(index);
       renderProjects();
+      renderProjectsButtons();
     });
 
     return closeButton;
@@ -66,10 +73,20 @@ class ProjectCardWithTodos extends ProjectCard {
     if (this.toDos.length) {
       const toDoList = document.createElement("ul");
       toDoList.setAttribute("class", "todo-list");
-      this.toDos.forEach((toDo) => {
+      sortTodosByDate(this.toDos);
+      this.toDos.forEach((toDo, index) => {
         const li = document.createElement("li");
         li.setAttribute("class", "todo-element");
         li.innerHTML = `<div class="todo-element-header"><h4 class="todo-element-title">${toDo.title}</h4><p>Due date: ${format(toDo.dueDate, "dd-MM-yyyy")}</p></div>`;
+        console.log(this.projectIndex, index);
+        const closeButton = createCloseTodoButton(
+          this.projectIndex,
+          index,
+          () => renderEditProject(this.projectIndex)
+        );
+        const buttonContainer = document.createElement("div");
+        buttonContainer.appendChild(closeButton);
+        li.appendChild(buttonContainer);
         toDoList.appendChild(li);
         toDoArea.appendChild(toDoList);
       });
@@ -83,9 +100,10 @@ class ProjectCardWithTodos extends ProjectCard {
     const addToDoButton = document.createElement("button");
     addToDoButton.setAttribute("class", "add-todo-button");
     addToDoButton.innerText = "+";
-    addToDoButton.addEventListener("click", () =>
-      openToDoDialog(this.toDoArea, this.projectIndex)
-    );
+    addToDoButton.addEventListener("click", () => {
+      openToDoDialog(this.toDoArea, this.projectIndex);
+      addToDoButton.setAttribute("disabled", true);
+    });
 
     const buttonContainer = document.createElement("div");
     buttonContainer.setAttribute("class", "add-todo-button-container");

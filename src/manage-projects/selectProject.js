@@ -10,6 +10,9 @@ export default function selectProject() {
   const label = document.createElement("label");
   label.setAttribute("for", "selection");
 
+  const selectorContainer = document.createElement("div");
+  selectorContainer.setAttribute("id", "selector-container");
+
   const selection = document.createElement("select");
   selection.setAttribute("id", "selection");
   selection.setAttribute("name", "selection");
@@ -34,6 +37,7 @@ export default function selectProject() {
   });
   submitChoiceButton.innerText = "select";
 
-  content.appendChild(selection);
-  content.appendChild(submitChoiceButton);
+  selectorContainer.appendChild(selection);
+  selectorContainer.appendChild(submitChoiceButton);
+  content.appendChild(selectorContainer);
 }

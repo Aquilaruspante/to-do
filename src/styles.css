@@ -163,7 +163,7 @@ main {
 header {
     display: flex;
     align-items: center;
-    background-color: rgb(2, 146, 26, 0.8);
+    background-color: rgb(170, 201, 175);
     flex-basis: 7%;
     color: rgb(235, 241, 236);
     border: 1px solid rgb(5, 99, 22);
@@ -200,3 +200,4 @@ img {
     padding: 40px;
     border-top: 2px solid rgb(188, 209, 188);
 }
+

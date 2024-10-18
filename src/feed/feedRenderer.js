@@ -8,6 +8,7 @@ import renderProjectsButtons from "../manage-projects/renderProjects";
 import { updateToDo, deleteToDo } from "../API/todDoCRUD";
 import { content } from "../index";
 import selectProject from "../manage-projects/selectProject";
+import renderEditProject from "../manage-projects/editProject";
 
 import { format } from "date-fns";
 
@@ -36,6 +37,26 @@ function renderProjects() {
   let toDoAndIndex = [];
   content.innerHTML = "";
   noToDosElement.innerHTML = "";
+
+  function createFeedHeader() {
+    const header = document.createElement("div");
+    header.setAttribute("class", "feed-header");
+
+    const title = document.createElement("h2");
+    title.setAttribute("id", "feed-title");
+    title.innerText = "Your to-dos";
+
+    const paragraph = document.createElement("p");
+    paragraph.setAttribute("id", "feed-paragraph");
+    paragraph.innerText = `To-dos are sorted by date, click on the checkbox to mark them as complete, click on the "x" to delete them!
+      Click on the project name to see it!`;
+
+    header.appendChild(title);
+    header.appendChild(paragraph);
+
+    content.appendChild(header);
+  }
+
   if (projects.length) {
     projects.forEach((project) => {
       project.toDos.forEach((toDo) => {
@@ -43,12 +64,9 @@ function renderProjects() {
       });
     });
     sortTodosByDate(toDos);
-    console.log(toDos);
     toDos.forEach((toDo, index) => {
-      console.log(toDo, index);
       toDoAndIndex.push([toDo, index]);
     });
-    console.log("toDoAndIndex", toDoAndIndex);
   } else {
     noToDosElement.appendChild(noProjectTitle);
     noToDosElement.appendChild(noProjectButton);
@@ -57,6 +75,7 @@ function renderProjects() {
   }
 
   if (toDos.length) {
+    createFeedHeader();
     toDoAndIndex.forEach((toDoIndexCouple) => {
       const div = document.createElement("div");
       div.setAttribute("class", "todo-card");
@@ -92,16 +111,16 @@ function renderProjects() {
       const projects = JSON.parse(localStorage.getItem("projects"));
 
       const project = projects[toDoIndexCouple[0].projectIndex];
-      projectLink.innerText = `Project: ${project.title}`;
+      if (project) projectLink.innerText = `Project: ${project.title}`;
+      projectLink.addEventListener("click", () =>
+        renderEditProject(toDoIndexCouple[0].projectIndex)
+      );
 
-      const closeButton = document.createElement("img");
-      closeButton.setAttribute("class", "close-button");
-      closeButton.setAttribute("src", closeButtonImage);
-      closeButton.setAttribute("alt", "close-x");
-      closeButton.addEventListener("click", () => {
-        deleteToDo(toDoIndexCouple[1], projects.indexOf(toDoIndexCouple[0]));
-        reRenderProjects();
-      });
+      const closeButton = createCloseTodoButton(
+        toDoIndexCouple[1],
+        projects.indexOf(toDoIndexCouple[0]),
+        reRenderProjects
+      );
 
       const imageContainer = document.createElement("div");
       imageContainer.appendChild(closeButton);
@@ -131,7 +150,20 @@ function reRenderProjects() {
 
 function sortTodosByDate(toDos) {
   toDos.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-  console.log("toDos inside sort function", toDos);
 }
 
-export { renderProjects };
+function createCloseTodoButton(projectIndex, index, afterwards) {
+  console.log(projectIndex, index);
+  const closeButton = document.createElement("img");
+  closeButton.setAttribute("class", "close-button");
+  closeButton.setAttribute("src", closeButtonImage);
+  closeButton.setAttribute("alt", "close-x");
+  closeButton.addEventListener("click", () => {
+    deleteToDo(projectIndex, index);
+    afterwards();
+  });
+
+  return closeButton;
+}
+
+export { renderProjects, sortTodosByDate, createCloseTodoButton };
